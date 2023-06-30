@@ -1,0 +1,10 @@
+{
+  "name": "SayVid",
+  "version": "0.0.1",
+  "manifest_version": 3,
+  "description": "SayVid is a chrome extension that lets you chat with chatgpt and watch youtube videos at the same time.",
+  "author": "ritikrajdev761@gmail.com",
+  "action": {
+    "default_popup": "index.html"
+  }
+}
