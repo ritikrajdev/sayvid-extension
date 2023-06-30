@@ -37,8 +37,6 @@ export default function Main() {
   useEffect(() => {
     getShouldChatOpen().then(shouldChatOpen => {
       setShouldChatOpen(shouldChatOpen);
-      if (shouldChatOpen && chats.length === 0)
-        getAllChats().then(setChats);
     });
   }, []);
 
@@ -52,6 +50,12 @@ export default function Main() {
         }
       );
   }, [chatContainerRef]);
+
+  useEffect(() => {
+    if (shouldChatOpen) {
+      getAllChats().then(setChats);
+    }
+  }, [shouldChatOpen]);
 
   return (
     <div className='main-app'>
