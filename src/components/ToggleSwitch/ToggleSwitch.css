@@ -1,0 +1,33 @@
+.toggle-switch {
+    width: 50px;
+    height: 25px;
+    border-radius: 25px;
+    padding: 2px;
+    background-color: var(--toggle-bg-color);
+    transition: background-color 0.2s ease-in;
+}
+
+.toggle-switch-circle {
+    display: inline-block;
+    background-color: var(--toggle-circle-color);
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    transition: transform 0.2s ease-in;
+}
+
+.toggle-switch > input:checked + .toggle-switch-circle {
+    transform: translateX(25px);
+}
+
+.toggle-switch:has(> input:checked) {
+    background-color: var(--toggle-bg-color-checked);
+}
+
+.toggle-switch:has(> input:disabled) {
+    cursor: inherit
+}
+
+.toggle-switch {
+    cursor: pointer;
+}

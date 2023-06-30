@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display:wght@900&display=swap');
+
+.brand-logo {
+  font-family: 'Big Shoulders Stencil Display', sans-serif;
+  font-size: 3rem;
+}
+
+.top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.divider {
+  margin: 0.5rem 0;
+}
+
+.chats-container {
+  max-height: 360px;
+  overflow-y: auto;
+}
