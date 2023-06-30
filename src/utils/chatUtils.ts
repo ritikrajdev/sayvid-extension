@@ -1,14 +1,19 @@
 import { getIdOfCurrentPage } from './general';
-import { InitialChatText } from '../constants/text/SayVid.en';
+import { InitialChatText } from '../constants/text/text.en';
 import { getFromStorage, setInStorage } from './storageUtils';
+import { makeRequest } from './makeRequest';
+import { POST_CHAT } from '../constants/apiEndpoints';
 
 export interface Chat {
   text: string;
   isMe: boolean;
 }
 
-export const getChatResponse = async (message: string) => {
-  return 'You said: ' + message;
+export const getChatResponse = async (
+  message: string, errorHandler: (errorMessage: string) => any) => {
+  const chatResponseData =
+    await makeRequest(POST_CHAT({ message }), errorHandler);
+  return chatResponseData?.message;
 };
 
 

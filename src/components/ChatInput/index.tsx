@@ -1,4 +1,4 @@
-import { ChatInputPlaceholder } from '../../constants/text/SayVid.en';
+import { ChatInputPlaceholder } from '../../constants/text/text.en';
 import './ChatInput.css';
 
 interface ChatInputProps {

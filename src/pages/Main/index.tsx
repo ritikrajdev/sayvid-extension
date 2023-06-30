@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useContext } from 'react';
 import Chat from '../../components/Chat';
 import ChatInput from '../../components/ChatInput';
 import ToggleSwitch from '../../components/ToggleSwitch';
-import { BrandName } from '../../constants/text/SayVid.en';
+import { BrandName } from '../../constants/text/text.en';
 import './Main.css';
 import {
   Chat as ChatType,
@@ -12,11 +12,13 @@ import {
   setAllChats,
   setShouldChatOpen as setChatOpen
 } from '../../utils/chatUtils';
+import { ErrorContext } from '../../contexts/errorContext';
 
 export default function Main() {
   const [shouldChatOpen, setShouldChatOpen] = useState(false);
   const [chats, setChats] = useState<ChatType[]>([]);
-  const chatContainerRef = useRef(null);
+  const chatContainerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
+  const { setError } = useContext(ErrorContext);
 
   const toggleChatOpen = () => {
     setShouldChatOpen(!shouldChatOpen);
@@ -41,15 +43,9 @@ export default function Main() {
   }, []);
 
   useEffect(() => {
-    (chatContainerRef.current as any)?.
-      addEventListener(
-        'DOMNodeInserted',
-        (event: React.ChangeEvent<HTMLDivElement>) => {
-          const { currentTarget: target } = event;
-          target.scroll({ top: target.scrollHeight, behavior: 'smooth' });
-        }
-      );
-  }, [chatContainerRef]);
+    chatContainerRef.current.scrollTop =
+      chatContainerRef.current.scrollHeight;
+  }, [chats]);
 
   useEffect(() => {
     if (shouldChatOpen) {
@@ -79,8 +75,10 @@ export default function Main() {
           </div>
           <ChatInput onChatSubmit={(ChatInputValue) => {
             addToChats(ChatInputValue);
-            getChatResponse(ChatInputValue).then((response) => {
-              addToChats(response, false, true);
+            getChatResponse(ChatInputValue, setError).then((response) => {
+              if (![undefined, null].includes(response)) {
+                addToChats(response, false, true);
+              }
             });
           }} />
         </>
