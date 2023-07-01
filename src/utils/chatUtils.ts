@@ -18,18 +18,21 @@ export const getChatResponse = async (
 
 
 export const getShouldChatOpen = async () => {
-  return (await getFromStorage(`${getIdOfCurrentPage()}_shouldChatOpen`))
+  const idCurrentPage = await getIdOfCurrentPage();
+  return (await getFromStorage(`${idCurrentPage}_shouldChatOpen`))
     === 'true';
 };
 
 export const setShouldChatOpen = async (shouldChatOpen: boolean) => {
-  setInStorage(
-    `${getIdOfCurrentPage()}_shouldChatOpen`, String(shouldChatOpen));
+  const idCurrentPage = await getIdOfCurrentPage();
+  await setInStorage(
+    `${idCurrentPage}_shouldChatOpen`, String(shouldChatOpen));
 };
 
 
 export const getAllChats = async (): Promise<Chat[]> => {
-  const allChatsString = await getFromStorage(`${getIdOfCurrentPage()}_chats`);
+  const idCurrentPage = await getIdOfCurrentPage();
+  const allChatsString = await getFromStorage(`${idCurrentPage}_chats`);
   const allChats = allChatsString ?
     (JSON.parse(allChatsString) as Chat[]) : null;
 
@@ -42,5 +45,6 @@ export const getAllChats = async (): Promise<Chat[]> => {
 };
 
 export async function setAllChats(chats: Chat[]) {
-  setInStorage(`${getIdOfCurrentPage()}_chats`, JSON.stringify(chats));
+  const idCurrentPage = await getIdOfCurrentPage();
+  await setInStorage(`${idCurrentPage}_chats`, JSON.stringify(chats));
 }
