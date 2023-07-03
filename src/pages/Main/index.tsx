@@ -14,6 +14,7 @@ import {
 } from '../../utils/chatUtils';
 import { ErrorContext } from '../../contexts/errorContext';
 import { getUrlOfCurrentPage } from '../../utils/general';
+import LinearProgress from '../../components/LinearProgress';
 
 export default function Main() {
   const [shouldChatOpen, setShouldChatOpen] = useState(false);
@@ -21,6 +22,7 @@ export default function Main() {
   const chatContainerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
   const { setError } = useContext(ErrorContext);
   const [url, setUrl] = useState('');
+  const [loadingChat, setLoadingChat] = useState(false);
 
   useEffect(() => {
     getUrlOfCurrentPage().then(setUrl).catch(console.error);
@@ -67,7 +69,6 @@ export default function Main() {
 
   return (
     <div className='main-app'>
-      {url}
       <div className='top-row'>
         <h1 className='brand-logo'>
           {BrandName}
@@ -90,11 +91,22 @@ export default function Main() {
               ))
             }
           </div>
+          {
+            loadingChat &&
+            <LinearProgress style={{
+              width: '300px',
+              marginLeft: '10px',
+              position: 'relative',
+              top: '2px'
+            }} />
+          }
           <ChatInput onChatSubmit={(ChatInputValue) => {
             addToChats(ChatInputValue);
+            setLoadingChat(true);
             getChatResponse(ChatInputValue, setError).then((response) => {
               if (![undefined, null].includes(response)) {
                 addToChats(response, false, true);
+                setLoadingChat(false);
               }
             });
           }} />
