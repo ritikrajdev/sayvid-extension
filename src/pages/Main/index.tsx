@@ -106,8 +106,8 @@ export default function Main() {
             getChatResponse(ChatInputValue, setError).then((response) => {
               if (![undefined, null].includes(response)) {
                 addToChats(response, false, true);
-                setLoadingChat(false);
               }
+              setLoadingChat(false);
             });
           }} />
         </>
