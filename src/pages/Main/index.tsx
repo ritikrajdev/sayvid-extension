@@ -13,14 +13,26 @@ import {
   setShouldChatOpen as setChatOpen
 } from '../../utils/chatUtils';
 import { ErrorContext } from '../../contexts/errorContext';
+import { getUrlOfCurrentPage } from '../../utils/general';
 
 export default function Main() {
   const [shouldChatOpen, setShouldChatOpen] = useState(false);
   const [chats, setChats] = useState<ChatType[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>({} as HTMLDivElement);
   const { setError } = useContext(ErrorContext);
+  const [url, setUrl] = useState('');
+
+  useEffect(() => {
+    getUrlOfCurrentPage().then(setUrl).catch(console.error);
+  }, []);
+
+  const isChattingDisabled = ! /youtube\.com\/watch\?v=.{11}/.test(url);
 
   const toggleChatOpen = () => {
+    if(isChattingDisabled) {
+      return;
+    }
+
     setShouldChatOpen(!shouldChatOpen);
     setChatOpen(!shouldChatOpen);
   };
@@ -55,12 +67,17 @@ export default function Main() {
 
   return (
     <div className='main-app'>
+      {url}
       <div className='top-row'>
         <h1 className='brand-logo'>
           {BrandName}
         </h1>
         <ToggleSwitch
-          id='toggle-chat' onChange={toggleChatOpen} checked={shouldChatOpen} />
+          id='toggle-chat'
+          onChange={toggleChatOpen}
+          checked={shouldChatOpen}
+          disabled={isChattingDisabled}
+        />
       </div>
       {
         shouldChatOpen &&

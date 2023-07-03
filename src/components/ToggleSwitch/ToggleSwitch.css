@@ -25,7 +25,12 @@
 }
 
 .toggle-switch:has(> input:disabled) {
-    cursor: inherit
+    cursor: not-allowed;
+}
+
+.toggle-switch > input:disabled + .toggle-switch-circle {
+    background-color: transparent;
+    border: 1px solid black;
 }
 
 .toggle-switch {
